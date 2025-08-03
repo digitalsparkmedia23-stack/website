@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BigWin - Color Prediction Game</title>
+    <style>
+        :root {
+            --primary: #6c5ce7;
+            --red: #ff4757;
+            --green: #2ed573;
+            --violet: #6c5ce7;
+            --dark: #2d3436;
+            --light: #f5f6fa;
+            --timer-bg: #2d3436;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #dfe6e9;
+            color: var(--dark);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--primary);
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+        }
+
+        .wallet {
+            background: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .wallet span {
+            font-weight: bold;
+            margin-left: 10px;
+            color: var(--primary);
+        }
+
+        .game-container {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .timer-container {
+            background: var(--timer-bg);
+            color: white;
+            text-align: center;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .color-options {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            gap: 15px;
+        }
+
+        .color-option {
+            flex: 1;
+            padding: 20px;
+            border-radius: 10px;
+            color: white;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            font-size: 18px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .color-option:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+        }
+
+        .color-option.red {
+            background: var(--red);
+        }
+
+        .color-option.green {
+            background: var(--green);
+        }
+
+        .color-option.violet {
+            background: var(--violet);
+        }
+
+        .color-option.selected {
+            border: 4px solid white;
+            box-shadow: 0 0 0 3px var(--dark);
+        }
+
+        .bet-section {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .bet-input {
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #ddd;
+            font-size: 16px;
+            outline: none;
+            transition: border 0.3s;
+        }
+
+        .bet-input:focus {
+            border-color: var(--primary);
+        }
+
+        .btn {
+            padding: 15px;
+            border-radius: 10px;
+            border: none;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-bet {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-bet:hover {
+            background: #5649c0;
+            transform: translateY(-2px);
+        }:
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BigWin - Color Prediction Game</title>
+    <style>
+        :root {
+            --primary: #6c5ce7;
+            --red: #ff4757;
+            --green: #2ed573;
+            --violet: #6c5ce7;
+            --dark: #2d3436;
+            --light: #f5f6fa;
+            --timer-bg: #2d3436;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+
+        body {
+            background-color: #dfe6e9;
+            color: var(--dark);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            margin-bottom: 30px;
+        }
+
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--primary);
+            text-shadow: 1px 1px 3px rgba(0,0,0,0.2);
+        }
+
+        .wallet {
+            background: white;
+            padding: 10px 20px;
+            border-radius: 50px;
+            display: flex;
+            align-items: center;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+        }
+
+        .wallet span {
+            font-weight: bold;
+            margin-left: 10px;
+            color: var(--primary);
+        }
+
+        .game-container {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            margin-bottom: 30px;
+        }
+
+        .timer-container {
+            background: var(--timer-bg);
+            color: white;
+            text-align: center;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 25px;
+            font-size: 24px;
+            font-weight: bold;
+        }
+
+        .color-options {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 25px;
+            gap: 15px;
+        }
+
+        .color-option {
+            flex: 1;
+            padding: 20px;
+            border-radius: 10px;
+            color: white;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: bold;
+            font-size: 18px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+
+        .color-option:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+        }
+
+        .color-option.red {
+            background: var(--red);
+        }
+
+        .color-option.green {
+            background: var(--green);
+        }
+
+        .color-option.violet {
+            background: var(--violet);
+        }
+
+        .color-option.selected {
+            border: 4px solid white;
+            box-shadow: 0 0 0 3px var(--dark);
+        }
+
+        .bet-section {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-bottom: 25px;
+        }
+
+        .bet-input {
+            padding: 15px;
+            border-radius: 10px;
+            border: 2px solid #ddd;
+            font-size: 16px;
+            outline: none;
+            transition: border 0.3s;
+        }
+
+        .bet-input:focus {
+            border-color: var(--primary);
+        }
+
+        .btn {
+            padding: 15px;
+            border-radius: 10px;
+            border: none;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .btn-bet {
+            background: var(--primary);
+            color: white;
+        }
+
+        .btn-bet:hover {
+            background: #5649c0;
+            transform: translateY(-2px);
+        }
+
+.btn-bet:disabled {
+            background: #b2bec3;
+            cursor: not-allowed;
+            transform: none;
+        }
+
+        .history-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 15px;
+            color: var(--dark);
+        }
+
+        .history-items {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 30px;
+        }
+
+        .history-item {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: white;
+            font-weight: bold;
+            font-size: 14px;
+        }
+
+        .history-item.red {
+            background: var(--red);
+        }
+
+        .history-item.green {
+            background: var(--green);
+        }
+
+        .history-item.violet {
+            background: var(--violet);
+        }
+
+        .result-popup {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.3s;
+        }
+
+        .result-popup.active {
+            opacity: 1;
+            pointer-events: all;
+        }
+
+        .result-content {
+            background: white;
+            padding: 30px;
+            border-radius: 15px;
+            text-align: center;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .result-title {
+            font-size: 24px;
+            margin-bottom: 20px;
+            color: var(--dark);
+        }
+
+        .result-color {
+            font-size: 20px;
+            font-weight: bold;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            color: white;
+        }
+
+        .result-amount {
+            font-size: 18px;
+            margin-bottom: 20px;
+        }
+
+        .btn-close {
+            background: var(--primary);
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            border: none;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        @media (max-width: 768px) {
+            .color-options {
+                flex-direction: column;
+            }
+
+            header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .wallet {
+                width: 100%;
+                justify-content: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">BigWin</div>
+            <div class="wallet">
+                Balance: <span id="walletBalance">₹1000</span>
+            </div>
+        </header>
+
+        <div class="game-container">
+            <div class="timer-container">
+                Time Left: <span id="timer">15</span>s
+            </div>
+
+            <div class="color-options">
+                <div class="color-option red" data-color="red">Red (1.5x)</div>
+                <div class="color-option green" data-color="green">Green (2x)</div>
+                <div class="color-option violet" data-color="violet">Violet (3x)</div>
+            </div>
+
+            <div class="bet-section">
+                <input type="number" id="betAmount" class="bet-input" placeholder="Enter bet amount" min="10">
+                <button id="placeBet" class="btn btn-bet" disabled>Place Bet</button>
+            </div>
+
+            <div class="history-title">Previous Results</div>
+            <div class="history-items" id="historyItems">
+                <!-- History items will be added dynamically -->
+            </div>
+        </div>
+    </div>
+
+<div class="result-popup" id="resultPopup">
+        <div class="result-content">
+            <div class="result-title">Result</div>
+            <div class="result-color" id="resultColorDisplay">Green</div>
+            <div class="result-amount" id="resultAmount">You won ₹200!</div>
+            <button class="btn-close" id="closePopup">Close</button>
+        </div>
+    </div>
+
+    <script>
+        // Game variables
+        let walletBalance = 1000;
+        let selectedColor = null;
+        let betAmount = 0;
+        let timer = 15;
+        let timerInterval;
+        let gameHistory = [];
+        let canPlaceBet = true;
+
+        // DOM elements
+        const walletBalanceEl = document.getElementById('walletBalance');
+        const timerEl = document.getElementById('timer');
+        const colorOptions = document.querySelectorAll('.color-option');
+        const betAmountInput = document.getElementById('betAmount');
+        const placeBetBtn = document.getElementById('placeBet');
+        const historyItemsEl = document.getElementById('historyItems');
+        const resultPopup = document.getElementById('resultPopup');
+        const resultColorDisplay = document.getElementById('resultColorDisplay');
+        const resultAmountEl = document.getElementById('resultAmount');
+        const closePopupBtn = document.getElementById('closePopup');
+
+        // Initialize game
+        function initGame() {
+            updateWalletDisplay();
+            startTimer();
+            setupEventListeners();
+            generateInitialHistory();
+        }
+
+        // Set up event listeners
+        function setupEventListeners() {
+            // Color selection
+            colorOptions.forEach(option => {
+                option.addEventListener('click', () => {
+                    if (!canPlaceBet) return;
+                    
+                    // Remove selected class from all options
+                    colorOptions.forEach(opt => opt.classList.remove('selected'));
+                    
+                    // Add selected class to clicked option
+                    option.classList.add('selected');
+                    selectedColor = option.dataset.color;
+                    
+                    // Enable place bet button if amount is entered
+                    if (betAmountInput.value) {
+                        placeBetBtn.disabled = false;
+                    }
+                });
+            });
+
+            // Bet amount input
+            betAmountInput.addEventListener('input', () => {
+                betAmount = parseInt(betAmountInput.value) || 0;
+                
+                // Validate bet amount
+                if (betAmount >= 10 && betAmount <= walletBalance && selectedColor) {
+                    placeBetBtn.disabled = false;
+                } else {
+                    placeBetBtn.disabled = true;
+                }
+            });
+
+            // Place bet button
+            placeBetBtn.addEventListener('click', placeBet);
+
+            // Close popup button
+            closePopupBtn.addEventListener('click', () => {
+                resultPopup.classList.remove('active');
+            });
+        }
+
+        // Start the timer
+        function startTimer() {
+            clearInterval(timerInterval);
+            timer = 15;
+            timerEl.textContent = timer;
+            
+            timerInterval = setInterval(() => {
+                timer--;
+                timerEl.textContent = timer;
+                
+                if (timer <= 5) {
+                    timerEl.style.color = '#ff7675';
+                }
+                
+                if (timer <= 0) {
+                    clearInterval(timerInterval);
+                    endRound();
+                }
+            }, 1000);
+        }
+
+        // Place a bet
+        function placeBet() {
+
+if (!selectedColor  betAmount < 10  betAmount > walletBalance) return;
+            
+            // Deduct bet amount from wallet
+            walletBalance -= betAmount;
+            updateWalletDisplay();
+            
+            // Disable betting until next round
+            canPlaceBet = false;
+            placeBetBtn.disabled = true;
+            betAmountInput.disabled = true;
+            
+            // Show processing message
+            placeBetBtn.textContent = 'Waiting for result...';
+        }
+
+        // End the round and determine results
+        function endRound() {
+            // Generate random result
+            const random = Math.random();
+            let resultColor;
+            
+            if (random < 0.45) { // 45% chance for red
+                resultColor = 'red';
+            } else if (random < 0.90) { // 45% chance for green
+                resultColor = 'green';
+            } else { // 10% chance for violet
+                resultColor = 'violet';
+            }
+            
+            // Generate random number for display (0-9)
+            const resultNumber = Math.floor(Math.random() * 10);
+            
+            // Add to history
+            addToHistory(resultColor, resultNumber);
+            
+            // Check if user won
+            let winAmount = 0;
+            if (selectedColor === resultColor) {
+                let multiplier = 1.5;
+                if (resultColor === 'green') multiplier = 2;
+                if (resultColor === 'violet') multiplier = 3;
+                
+                winAmount = Math.floor(betAmount * multiplier);
+                walletBalance += winAmount;
+            }
+            
+            // Update wallet
+            updateWalletDisplay();
+            
+            // Show result popup
+            showResult(resultColor, resultNumber, winAmount);
+            
+            // Reset for next round
+            resetRound();
+        }
+
+        // Show result popup
+        function showResult(color, number, winAmount) {
+            resultColorDisplay.textContent = ${color.charAt(0).toUpperCase() + color.slice(1)} (${number});
+            resultColorDisplay.className = 'result-color';
+            resultColorDisplay.classList.add(color);
+            
+            if (winAmount > 0) {
+                resultAmountEl.textContent = You won ₹${winAmount}!;
+                resultAmountEl.style.color = '#2ecc71';
+            } else {
+                resultAmountEl.textContent = 'Better luck next time!';
+                resultAmountEl.style.color = '#e74c3c';
+            }
+            
+            resultPopup.classList.add('active');
+        }
+
+        // Reset for next round
+        function resetRound() {
+            // Clear selection
+            selectedColor = null;
+            colorOptions.forEach(opt => opt.classList.remove('selected'));
+            
+            // Reset bet amount
+            betAmountInput.value = '';
+            betAmount = 0;
+            
+            // Enable inputs for next round
+            canPlaceBet = true;
+            betAmountInput.disabled = false;
+            placeBetBtn.disabled = true;
+            placeBetBtn.textContent = 'Place Bet';
+            
+            // Start new timer
+            startTimer();
+        }
+
+        // Update wallet display
+        function updateWalletDisplay() {
+            walletBalanceEl.textContent = ₹${walletBalance};
+        }
+
+        // Add result to history
+        function addToHistory(color, number) {
+            gameHistory.unshift({ color, number });
+            if (gameHistory.length > 5) {
+                gameHistory.pop();
+            }
+            updateHistoryDisplay();
+        }
+
+        // Generate initial history
+        function generateInitialHistory() {
+            const colors = ['red', 'green', 'violet'];
+
+for (let i = 0; i < 5; i++) {
+                const randomColor = colors[Math.floor(Math.random() * colors.length)];
+                const randomNumber = Math.floor(Math.random() * 10);
+                gameHistory.push({ color: randomColor, number: randomNumber });
+            }
+            updateHistoryDisplay();
+        }
+
+        // Update history display
+        function updateHistoryDisplay() {
+            historyItemsEl.innerHTML = '';
+            gameHistory.forEach(item => {
+                const historyItem = document.createElement('div');
+                historyItem.className = history-item ${item.color};
+                historyItem.textContent = item.number;
+                historyItemsEl.appendChild(historyItem);
+            });
+        }
+
+        // Initialize the game when DOM is loaded
+        document.addEventListener('DOMContentLoaded', initGame);
+    </script>
+</body>
+</html>
